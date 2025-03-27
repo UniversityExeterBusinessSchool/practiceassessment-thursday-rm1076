@@ -1,10 +1,10 @@
 #######################################################################################################################################################
 # 
-# Name:
-# SID:
-# Exam Date:
-# Module:
-# Github link for this assignment:  
+# Name: Rakesh Mohankumar
+# SID: 740098081
+# Exam Date: 27-03-2025
+# Module: Programming for Business Analytics (BEMM458_J_2_202425)
+# Github link for this assignment:  https://github.com/UniversityExeterBusinessSchool/practiceassessment-thursday-rm1076.git
 #
 # ######################################################################################################################################################
 # Instruction 1. Read the questions and instructions carefully and complete scripts.
@@ -49,8 +49,36 @@ key_comments = {
 
 # Write your search code here and provide comments. 
 
-# Initialize an empty list to store (start, end) positions
+# Now we need to search for words 'order' & 'minor' from cx feedback- 
+# And we need to store the start and end position is the list.
+
+customer_feedback = """Your recent order experience has been satisfactory overall. While there were some minor issues,
+we appreciate the effort made to resolve them promptly."
+"""
+
+
+# My first letter of SID number - 7 , last digit - 1  (740098081)
+key_comments = {
+    7: 'resolve',
+    1: 'order'
+}
+
+# Now creating empty list to store the positions 
 my_list = []
+
+# Loop through key_comments
+for key in key_comments:
+    word = key_comments[key]
+    start = customer_feedback.find(word)         # to find the starting position of the word
+    end = start + len(word)                      # to find the ending, we use starting position + length of the word 
+    my_list.append((start, end))                 # add (start, end) as tuple
+
+print(my_list)
+
+# result: [(123, 130), (13, 18)]
+# 'resolve' starting at 123rd position and ending at 130th position  
+# 'order' starting at 13th position and ending at 18th position   
+
 
 ##########################################################################################################################################################
 
@@ -59,18 +87,38 @@ my_list = []
 # Operating Profit Margin, Revenue per Customer, Customer Churn Rate, and Average Order Value. Use Python functions 
 # that will take the values and return the metric needed. Use the first two and last two digits of your ID number as the input values.
 
-# Insert first two digits of ID number here:
-# Insert last two digits of ID number here:
+# Insert first two digits of ID number here: 74
+# Insert last two digits of ID number here: 81
 
 # Write your code for Operating Profit Margin
+def operating_profit_margin(operating_profit, revenue):
+    return (operating_profit / revenue) * 100
 
 # Write your code for Revenue per Customer
+def revenue_per_customer(total_revenue, total_customers):
+    return total_revenue / total_customers
 
 # Write your code for Customer Churn Rate
+def churn_rate(customers_lost, total_customers_start):
+    return (customers_lost / total_customers_start) * 100
 
 # Write your code for Average Order Value
+def average_order_value(total_revenue, number_of_orders):
+    return total_revenue / number_of_orders
 
 # Call your designed functions here
+
+opm = operating_profit_margin(74, 200)
+rpc = revenue_per_customer(7400, 81)
+ccr = churn_rate(8, 81)
+aov = average_order_value(7400, 81)
+
+# to print the result
+print("Operating Profit Margin:", opm)  # result: 37.0
+print("Revenue per Customer:", rpc)    # result: 91.36...
+print("Customer Churn Rate:", ccr)     # result: 9.87...
+print("Average Order Value:", aov)     # result: 91.36...
+
 
 ##########################################################################################################################################################
 
@@ -98,6 +146,35 @@ Price (£)    Demand (Units)
 
 # Write your code here
 
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+# writing price and demand in array format first
+prices = np.array([20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]).reshape(-1, 1)
+demand = np.array([300, 280, 260, 240, 210, 190, 160, 140, 120, 100, 85])
+
+# now in order to train the model
+model = LinearRegression()
+model.fit(prices, demand)
+
+# to predict the demand when the price is at 52, we use
+predicted_demand = model.predict([[52]])
+print("Demand at £52:", predicted_demand[0])  # result - 158.17
+
+# to find the best price for oour maximum revenue, we use 
+max_revenue = 0
+best_price = 0
+
+for val in range(20, 71):
+    d = model.predict([[val]])[0]
+    revenue = val * d
+    if revenue > max_revenue:
+        max_revenue = revenue
+        best_price = val
+
+print("The best price to maximize revenue is :", best_price)  # result: 40
+
+
 ##########################################################################################################################################################
 
 # Question 4 - Debugging; Plotting and data visualization chart
@@ -106,17 +183,34 @@ import random
 import matplotlib.pyplot as plt
 
 # Generate 100 random numbers between 1 and student id number
-max-value = integer(input("Enter your Student ID: "))
-random_numbers = [random.randint(1, max_value) for i in range(0,100)]
+# max-value = integer(input("Enter your Student ID: ")) - it cannot have '-' for variable
+
+# here we are asking the student id number and we should use int. I am commenting the given code and entering correct code below
+max_value = int(input("Enter your Student ID: "))  # forexample 740098081
+
+# random_numbers = [random.randint(1, max_value) for i in range(0,100)]
+
+# to generate 100 random nos between 1 & my student ID 
+random_numbers = [random.randint(1, max_value) for i in range(100)] # - here range should not start from 0 since we have to start from 1
+
 
 # Plotting the numbers in a line chart
-plt.plot(random_numbers, marker='O', markercolor='green', markeredgcolor='red', linestyle='--', lable='Random Numbers', color='blue');
-plt.title(Line Chart of 100 Random Numbers)
-plt.xlabel="Index"
-plt.ylabel="Random Number"
-plt.legend('---')
+# plt.plot(random_numbers, marker='O', markercolor='green', markeredgcolor='red', linestyle='--', lable='Random Numbers', color='blue');
+#no 0 instead o
+# plt.title(Line Chart of 100 Random Numbers)
+# plt.xlabel="Index"
+# plt.ylabel="Random Number"
+# plt.legend('---')
+# plt.grid(True)
+# plt.show()
+
+
+# in order to plot the random numbers 
+plt.plot(random_numbers, marker='o', markerfacecolor='green', markeredgecolor='red', linestyle='--', label='Random Numbers', color='blue')
+plt.title("Line Chart of 100 Random Numbers")
+plt.xlabel("Index")
+plt.ylabel("Random Number")
+plt.legend()
 plt.grid(True)
 plt.show()
-
-
 
